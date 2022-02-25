@@ -135,9 +135,10 @@ def get_smooth_quadratic_bezier_handle_points(points):
     if len(points) == 2:
         return midpoint(*points)
     smooth_to_right, smooth_to_left = [
-        0.25 * ps[0:-2] + ps[1:-1] - 0.25 * ps[2:]
+        0.25 * ps[:-2] + ps[1:-1] - 0.25 * ps[2:]
         for ps in (points, points[::-1])
     ]
+
     if np.isclose(points[0], points[-1]).all():
         last_str = 0.25 * points[-2] + points[-1] - 0.25 * points[1]
         last_stl = 0.25 * points[1] + points[0] - 0.25 * points[-2]
@@ -264,8 +265,8 @@ def get_quadratic_approximation_of_cubic(a0, h0, h1, a1):
         ti_bounds.append(ti)
     ti_min, ti_max = ti_bounds
     np.seterr(**settings)
-    ti_min_in_range = has_infl & (0 < ti_min) & (ti_min < 1)
-    ti_max_in_range = has_infl & (0 < ti_max) & (ti_max < 1)
+    ti_min_in_range = has_infl & (ti_min > 0) & (ti_min < 1)
+    ti_max_in_range = has_infl & (ti_max > 0) & (ti_max < 1)
 
     # Choose a value of t which starts at 0.5,
     # but is updated to one of the inflection points

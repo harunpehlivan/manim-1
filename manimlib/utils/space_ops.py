@@ -148,10 +148,7 @@ def z_to_vector(vector):
     """
     axis = cross(OUT, vector)
     if get_norm(axis) == 0:
-        if vector[2] > 0:
-            return np.identity(3)
-        else:
-            return rotation_matrix(PI, RIGHT)
+        return np.identity(3) if vector[2] > 0 else rotation_matrix(PI, RIGHT)
     angle = np.arccos(np.dot(OUT, normalize(vector)))
     return rotation_matrix(angle, axis=axis)
 
@@ -308,10 +305,8 @@ def get_closest_point_on_line(a, b, p):
     """
     # x = b + t*(a-b) = t*a + (1-t)*b
     t = np.dot(p - b, a - b) / np.dot(a - b, a - b)
-    if t < 0:
-        t = 0
-    if t > 1:
-        t = 1
+    t = max(t, 0)
+    t = min(t, 1)
     return ((t * a) + ((1 - t) * b))
 
 
@@ -379,9 +374,7 @@ def earclip_triangulation(verts, ring_ends):
 
     def ring_area(ring_id):
         ring = rings[ring_id]
-        s = 0
-        for i, j in zip(ring[1:], ring):
-            s += cross2d(verts[i], verts[j])
+        s = sum(cross2d(verts[i], verts[j]) for i, j in zip(ring[1:], ring))
         return abs(s) / 2
 
     # Points at the same position may cause problems

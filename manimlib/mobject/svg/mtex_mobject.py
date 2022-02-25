@@ -178,16 +178,14 @@ class _TexParser(object):
             if not match_objs:
                 continue
             self.specified_substrings.append(string)
-            for match_obj in match_objs:
-                all_tex_spans.append(match_obj.span())
-
+            all_tex_spans.extend(match_obj.span() for match_obj in match_objs)
         former_script_spans_dict = dict([
             script_span_pair[0][::-1]
             for script_span_pair in self.neighbouring_script_span_pairs
         ])
         for span_begin, span_end in all_tex_spans:
             # Deconstruct spans containing one out of two scripts.
-            if span_end in former_script_spans_dict.keys():
+            if span_end in former_script_spans_dict:
                 span_end = former_script_spans_dict[span_end]
                 if span_begin >= span_end:
                     continue

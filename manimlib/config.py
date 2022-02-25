@@ -162,8 +162,7 @@ def parse_cli():
             "--log-level",
             help="Level of messages to Display, can be DEBUG / INFO / WARNING / ERROR / CRITICAL"
         )
-        args = parser.parse_args()
-        return args
+        return parser.parse_args()
     except argparse.ArgumentError as err:
         log.error(str(err))
         sys.exit(2)
@@ -314,10 +313,9 @@ def get_configuration(args):
         "preview": not write_file,
         "presenter_mode": args.presenter_mode,
         "leave_progress_bars": args.leave_progress_bars,
+        "camera_config": get_camera_configuration(args, custom_config),
     }
 
-    # Camera configuration
-    config["camera_config"] = get_camera_configuration(args, custom_config)
 
     # Default to making window half the screen size
     # but make it full screen if -f is passed in

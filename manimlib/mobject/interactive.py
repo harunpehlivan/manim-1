@@ -240,8 +240,7 @@ class LinearNumberSlider(ControlMobject):
         prop = get_norm(point_on_line - start) / get_norm(end - start)
         value = self.min_value + prop * (self.max_value - self.min_value)
         no_of_steps = int((value - self.min_value) / self.step)
-        value_nearest_to_step = self.min_value + no_of_steps * self.step
-        return value_nearest_to_step
+        return self.min_value + no_of_steps * self.step
 
 
 class ColorSliders(Group):
@@ -401,12 +400,12 @@ class Textbox(ControlMobject):
         return False
 
     def on_key_press(self, mob, event_data):
-        symbol = event_data["symbol"]
-        modifiers = event_data["modifiers"]
-        char = chr(symbol)
         if mob.isActive:
+            symbol = event_data["symbol"]
+            modifiers = event_data["modifiers"]
             old_value = mob.get_value()
             new_value = old_value
+            char = chr(symbol)
             if char.isalnum():
                 if (modifiers & PygletWindowKeys.MOD_SHIFT) or (modifiers & PygletWindowKeys.MOD_CAPSLOCK):
                     new_value = old_value + char.upper()

@@ -44,9 +44,7 @@ def tex_hash(tex_file_content):
 
 
 def tex_to_svg_file(tex_file_content):
-    svg_file = os.path.join(
-        get_tex_dir(), tex_hash(tex_file_content) + ".svg"
-    )
+    svg_file = os.path.join(get_tex_dir(), f'{tex_hash(tex_file_content)}.svg')
     if not os.path.exists(svg_file):
         # If svg doesn't exist, create it
         tex_to_svg(tex_file_content, svg_file)
@@ -73,7 +71,7 @@ def tex_to_dvi(tex_file):
     tex_config = get_tex_config()
     program = tex_config["executable"]
     file_type = tex_config["intermediate_filetype"]
-    result = tex_file.replace(".tex", "." + file_type)
+    result = tex_file.replace(".tex", f".{file_type}")
     if not os.path.exists(result):
         commands = [
             program,
@@ -104,7 +102,7 @@ def dvi_to_svg(dvi_file, regen_if_exists=False):
     where in the dvi
     """
     file_type = get_tex_config()["intermediate_filetype"]
-    result = dvi_file.replace("." + file_type, ".svg")
+    result = dvi_file.replace(f".{file_type}", ".svg")
     if not os.path.exists(result):
         commands = [
             "dvisvgm",
@@ -128,7 +126,7 @@ def display_during_execution(message):
     to_print = message.split("\n")[0]
     max_characters = os.get_terminal_size().columns - 1
     if len(to_print) > max_characters:
-        to_print = to_print[:max_characters - 3] + "..."
+        to_print = f'{to_print[:max_characters - 3]}...'
     try:
         print(to_print, end="\r")
         yield

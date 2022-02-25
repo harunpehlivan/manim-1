@@ -35,9 +35,7 @@ class Animation(object):
         self.mobject = mobject
 
     def __str__(self):
-        if self.name:
-            return self.name
-        return self.__class__.__name__ + str(self.mobject)
+        return self.name or self.__class__.__name__ + str(self.mobject)
 
     def begin(self):
         # This is called right as an animation is being

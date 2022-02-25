@@ -175,11 +175,10 @@ class GeneralizedPascalsTriangle(VMobject):
 
     def get_lowest_row(self):
         n = self.nrows - 1
-        lowest_row = VGroup(*[
+        return VGroup(*[
             self.coords_to_mobs[n][k]
             for k in range(n + 1)
         ])
-        return lowest_row
 
 
 class PascalsTriangle(GeneralizedPascalsTriangle):

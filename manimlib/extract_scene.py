@@ -137,5 +137,4 @@ def main(config):
         return [BlankScene(**scene_config)]
 
     all_scene_classes = get_scene_classes_from_module(module)
-    scenes = get_scenes_to_render(all_scene_classes, scene_config, config)
-    return scenes
+    return get_scenes_to_render(all_scene_classes, scene_config, config)
