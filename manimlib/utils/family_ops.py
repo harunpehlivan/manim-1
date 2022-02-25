@@ -28,8 +28,7 @@ def restructure_list_to_exclude_certain_family_members(mobject_list, to_remove):
         for mob in list_to_examine:
             if mob in set_to_remove:
                 continue
-            intersect = set_to_remove.intersection(mob.get_family())
-            if intersect:
+            if intersect := set_to_remove.intersection(mob.get_family()):
                 add_safe_mobjects_from_list(mob.submobjects, intersect)
             else:
                 new_list.append(mob)

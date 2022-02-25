@@ -400,10 +400,7 @@ class LinearTransformationScene(VectorScene):
             new_label=None,
             **kwargs):
         label_mob = self.label_vector(vector, label, **kwargs)
-        if new_label:
-            label_mob.target_text = new_label
-        else:
-            label_mob.target_text = "%s(%s)" % (
+        label_mob.target_text = new_label or "%s(%s)" % (
                 transformation_name,
                 label_mob.get_tex()
             )

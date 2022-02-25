@@ -32,8 +32,7 @@ def get_vectorized_rgb_gradient_function(min_value, max_value, color_map):
         next_indices = np.clip(indices + 1, 0, len(rgbs) - 1)
         inter_alphas = scaled_alphas % 1
         inter_alphas = inter_alphas.repeat(3).reshape((len(indices), 3))
-        result = interpolate(rgbs[indices], rgbs[next_indices], inter_alphas)
-        return result
+        return interpolate(rgbs[indices], rgbs[next_indices], inter_alphas)
     return func
 
 
@@ -176,7 +175,7 @@ class StreamLines(VGroup):
             points = [point]
             total_arc_len = 0
             time = 0
-            for x in range(self.max_time_steps):
+            for _ in range(self.max_time_steps):
                 time += self.dt
                 last_point = points[-1]
                 new_point = last_point + self.dt * (self.point_func(last_point) - origin)

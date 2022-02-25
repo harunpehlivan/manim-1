@@ -178,7 +178,7 @@ class Tex(SingleStringTex):
         # Separate out any strings specified in the isolate
         # or tex_to_color_map lists.
         substrings_to_isolate = [*self.isolate, *self.tex_to_color_map.keys()]
-        if len(substrings_to_isolate) == 0:
+        if not substrings_to_isolate:
             return tex_strings
         patterns = (
             "({})".format(re.escape(ss))
@@ -227,10 +227,7 @@ class Tex(SingleStringTex):
             if not case_sensitive:
                 tex1 = tex1.lower()
                 tex2 = tex2.lower()
-            if substring:
-                return tex1 in tex2
-            else:
-                return tex1 == tex2
+            return tex1 in tex2 if substring else tex1 == tex2
 
         return VGroup(*filter(
             lambda m: isinstance(m, SingleStringTex) and test(tex, m.get_tex()),
@@ -265,9 +262,8 @@ class Tex(SingleStringTex):
 
         if stop_tex is None:
             return self[start_index:]
-        else:
-            stop_index = self.index_of_part_by_tex(stop_tex, start=start_index, **kwargs)
-            return self[start_index:stop_index]
+        stop_index = self.index_of_part_by_tex(stop_tex, start=start_index, **kwargs)
+        return self[start_index:stop_index]
 
     def sort_alphabetically(self):
         self.submobjects.sort(key=lambda m: m.get_tex())
@@ -292,7 +288,7 @@ class BulletedList(TexText):
     }
 
     def __init__(self, *items, **kwargs):
-        line_separated_items = [s + "\\\\" for s in items]
+        line_separated_items = [f'{s}\\\\' for s in items]
         TexText.__init__(self, *line_separated_items, **kwargs)
         for part in self:
             dot = Tex("\\cdot").scale(self.dot_scale_factor)

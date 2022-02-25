@@ -296,13 +296,12 @@ class Camera(object):
 
     # Needed?
     def get_texture(self):
-        texture = self.ctx.texture(
+        return self.ctx.texture(
             size=self.fbo.size,
             components=4,
             data=self.get_raw_fbo_data(),
             dtype='f4'
         )
-        return texture
 
     # Getting camera attributes
     def get_pixel_shape(self):
@@ -377,8 +376,9 @@ class Camera(object):
         if shader_wrapper.vert_indices is None:
             ibo = None
         else:
-            vert_index_data = shader_wrapper.vert_indices.astype('i4').tobytes()
-            if vert_index_data:
+            if vert_index_data := shader_wrapper.vert_indices.astype(
+                'i4'
+            ).tobytes():
                 ibo = self.ctx.buffer(vert_index_data)
             else:
                 ibo = None
@@ -491,8 +491,7 @@ class Camera(object):
         return self.path_to_texture[path][0]
 
     def release_texture(self, path):
-        tid_and_texture = self.path_to_texture.pop(path, None)
-        if tid_and_texture:
+        if tid_and_texture := self.path_to_texture.pop(path, None):
             tid_and_texture[1].release()
         return self
 

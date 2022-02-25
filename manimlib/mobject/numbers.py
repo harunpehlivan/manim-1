@@ -72,10 +72,7 @@ class DecimalNumber(VMobject):
 
         rounded_num = np.round(number, self.num_decimal_places)
         if num_string.startswith("-") and rounded_num == 0:
-            if self.include_sign:
-                num_string = "+" + num_string[1:]
-            else:
-                num_string = num_string[1:]
+            num_string = "+" + num_string[1:] if self.include_sign else num_string[1:]
         num_string = num_string.replace("-", "–")
         return num_string
 
